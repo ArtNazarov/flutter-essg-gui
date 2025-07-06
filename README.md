@@ -6,6 +6,8 @@ GUI для приложения ArtNazarov/elixir-ssg для записи атр
 
 Админ-панель на Flutter для управления контентом и генерации статических HTML-страниц. Приложение позволяет создавать веб-страницы через простой интерфейс, сохраняя данные в структурированных текстовых файлах. Сгенерированные страницы совместимы с [elixir-ssg](https://github.com/ArtNazarov/elixir-ssg)
 
+![screenshot](https://dl.dropbox.com/scl/fi/11uew8wobafzr2jrsys8o/page_creator_flutter-essg-gui.png?rlkey=h31fnshuflfs8i25e6da8vpar&st=ytodhyjt)
+
 # ✨ Возможности
 
 ✅ Создание страниц через форму
