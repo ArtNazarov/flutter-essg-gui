@@ -109,39 +109,61 @@ class _PageListScreenState extends State<PageListScreen> {
           ),
         ],
       ),
-      body: _isLoading
-      ? const Center(child: CircularProgressIndicator())
-      : _pageIds.isEmpty
-      ? const Center(child: Text('No pages found'))
-      : ListView.builder(
-        itemCount: _pageIds.length,
-        itemBuilder: (context, index) {
-          final pageId = _pageIds[index];
-          return Card(
-            margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            child: ListTile(
-              title: Text('Page ID: $pageId'),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.edit),
-                    onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => EditPageScreen(pageId: pageId),
+      body: Column(
+        children: [
+          Expanded(
+            child: _isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : _pageIds.isEmpty
+            ? const Center(child: Text('No pages found'))
+            : ListView.builder(
+              itemCount: _pageIds.length,
+              itemBuilder: (context, index) {
+                final pageId = _pageIds[index];
+                return Card(
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 8, vertical: 4),
+                    child: ListTile(
+                      title: Text('Page ID: $pageId'),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.edit),
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                EditPageScreen(pageId: pageId),
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.delete),
+                            onPressed: () => _deletePage(pageId),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: () => _deletePage(pageId),
-                  ),
-                ],
+                );
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                icon: const Icon(Icons.add),
+                label: const Text('Add New Page'),
+                onPressed: () => Navigator.pushNamed(context, '/create'),
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                ),
               ),
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }
@@ -178,7 +200,14 @@ class _EditPageScreenState extends State<EditPageScreen> {
       final dataDir = Directory('${directory.path}/data');
 
       if (await dataDir.exists()) {
-        final attributes = ['title', 'description', 'heading', 'content', 'year', 'author'];
+        final attributes = [
+          'title',
+          'description',
+          'heading',
+          'content',
+          'year',
+          'author'
+        ];
 
         for (final attr in attributes) {
           final file = File('${dataDir.path}/${widget.pageId}-$attr.txt');
@@ -385,8 +414,6 @@ class _EditPageScreenState extends State<EditPageScreen> {
     );
   }
 }
-
-
 
 class CreatePageScreen extends StatefulWidget {
   const CreatePageScreen({super.key});
@@ -631,7 +658,18 @@ class _CreatePageScreenState extends State<CreatePageScreen> {
                   style: TextStyle(fontSize: 18),
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 16),
+              OutlinedButton(
+                onPressed: () => Navigator.pushNamed(context, '/list'),
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                ),
+                child: const Text(
+                  'Return to List',
+                  style: TextStyle(fontSize: 18),
+                ),
+              ),
+              const SizedBox(height: 16),
               if (_saveLocation.isNotEmpty) ...[
                 Text(
                   'Files saved in:',
